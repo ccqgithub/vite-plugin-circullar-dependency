@@ -22,3 +22,7 @@ export default defineConfig({
   })
 })
 ```
+
+## Inspired by
+
+-  https://github.com/aackerman/circular-dependency-plugin
