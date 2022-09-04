@@ -13,6 +13,7 @@ const circularDependencyPlugin = (options = {}) => {
         const id = path_1.default.relative(cwd, curModule.id);
         // mark read
         seenModules[curModule.id] = true;
+        // deps
         const deps = [...curModule.importedIds];
         if (!allowAsyncCycles) {
             deps.push(...curModule.dynamicallyImportedIds);
@@ -26,14 +27,16 @@ const circularDependencyPlugin = (options = {}) => {
             if (dep.id in seenModules) {
                 // oter id circular
                 if (dep.id !== initModule.id) {
-                    continue;
+                    return [];
                 }
                 return [...list, id, path_1.default.relative(cwd, dep.id)];
             }
-            return isCyclic(initModule, modulesObj[depId], seenModules, [
+            const arr = isCyclic(initModule, modulesObj[depId], seenModules, [
                 ...list,
                 path_1.default.relative(cwd, curModule.id)
             ]);
+            if (arr.length)
+                return arr;
         }
         return [];
     };

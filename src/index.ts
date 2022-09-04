@@ -32,6 +32,7 @@ export const circularDependencyPlugin = (
     // mark read
     seenModules[curModule.id] = true;
 
+    // deps
     const deps = [...curModule.importedIds];
     if (!allowAsyncCycles) {
       deps.push(...curModule.dynamicallyImportedIds);
@@ -47,16 +48,18 @@ export const circularDependencyPlugin = (
       if (dep.id in seenModules) {
         // oter id circular
         if (dep.id !== initModule.id) {
-          continue;
+          return [];
         }
 
         return [...list, id, path.relative(cwd, dep.id)];
       }
 
-      return isCyclic(initModule, modulesObj[depId], seenModules, [
+      const arr = isCyclic(initModule, modulesObj[depId], seenModules, [
         ...list,
         path.relative(cwd, curModule.id)
       ]);
+
+      if (arr.length) return arr;
     }
 
     return [];
@@ -73,12 +76,14 @@ export const circularDependencyPlugin = (
         const id = path.relative(cwd, module.id);
 
         const shouldSkip = exclude.test(id) || !include.test(id);
+
         // skip the module if it matches the exclude pattern
         if (shouldSkip) {
           continue;
         }
 
         const list = isCyclic(module, module, {}, []);
+
         // have circular dependency
         if (list.length) {
           const messate = `\n\x1B[31mHave circular dependency: ${list.join(

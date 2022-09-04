@@ -19,7 +19,7 @@ export default defineConfig({
           .filter(m => !m.startsWith('_'))
           .map(m => [m, `node:${m}`])
           .flat(),
-      ],
+      ]
     },
   },
 })

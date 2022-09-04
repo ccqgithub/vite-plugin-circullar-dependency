@@ -22,14 +22,16 @@ const circularDependencyPlugin = (options = {}) => {
         continue;
       if (dep.id in seenModules) {
         if (dep.id !== initModule.id) {
-          continue;
+          return [];
         }
         return [...list, id, path.relative(cwd, dep.id)];
       }
-      return isCyclic(initModule, modulesObj[depId], seenModules, [
+      const arr = isCyclic(initModule, modulesObj[depId], seenModules, [
         ...list,
         path.relative(cwd, curModule.id)
       ]);
+      if (arr.length)
+        return arr;
     }
     return [];
   };

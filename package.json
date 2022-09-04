@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-circullar-dependency",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Check circular dependency in vite project",
   "main": "./dist/index.js",
   "exports": {
