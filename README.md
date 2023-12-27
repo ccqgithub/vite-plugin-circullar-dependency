@@ -2,6 +2,9 @@
 
 Check circular dependency in vite project
 
+> Suggest switching to https://github.com/threedayAAAAA/rollup-plugin-circular-dependency
+
+
 ## Install
 
 `npm i vite-plugin-circullar-dependency -D`
